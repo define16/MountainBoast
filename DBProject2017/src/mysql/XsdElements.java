@@ -23,7 +23,7 @@ public class XsdElements {
 	    	String DBName = "hiking_boast"; //db이름
 	    	String url = "jdbc:mysql://localhost:3306/"+DBName;// user테이블을 수정하면
 	    	String strUser = "root"; // 계정 id
-	    	String strPassword = "20196637"; // 계정 패스워드
+	    	String strPassword = "1234"; // 계정 패스워드
 	    	String strMySQLDriver = "com.mysql.jdbc.Driver"; // 드라이버 이름 따로 만들어줌
 	    	Connection con = null;	//db 연결
 	    	Statement stmt = null;	//db 삽입시 이용
