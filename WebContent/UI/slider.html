@@ -1,0 +1,241 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="script/iscroll.js"></script>
+<link type="text/css" href="cssfile/slider.css" rel="stylesheet" />
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+
+var joinFormUrl = "include/form/joinForm.php";
+
+$(document).ready(function(){
+	jQuery.easing.def = "easeOutExpo";
+	var eventCount = 6;
+	var eventOpenFlag = true;
+	var autoScrollInterval = 4000;
+	
+	// initalize event carousel (no support IE)
+	var totalCarousel = 6;
+	var currentEvent = 0;
+	var TimeMilliseconds = new Date();
+	var clickHandler = false;
+	$("#eventTitle").click(function() {
+		if (eventOpenFlag) {
+			$("#top").animate( { height:"52px" }, 500);
+			$("#eventDescription").css("display", "none");
+		} else {
+			$("#top").animate( { height:"365px" }, 500);
+			$("#eventDescription").css("display", "inline");
+		}
+		eventOpenFlag = !eventOpenFlag;
+	});
+
+	$("#scroller").css("width", (768*totalCarousel)+"px");
+
+	if ((navigator.appName).indexOf("Microsoft")!=-1) {
+		$(".eventScrollButton").click(function() {
+			selectNumber(this.id, true);
+		});
+
+		$("#0").css("color", "#000000");
+	} else {
+		var iscroll = new iScroll("carouselWrapper", {
+			snap: true,
+			momentum: false,
+			hScrollbar: false,
+			vScrollbar: false,
+			lockDirection: false,
+			onScrollEnd: function() {
+				$("#indicator li").each(function(i, node) {
+					if(i === iscroll.currPageX) {
+						$(node).addClass("active");
+					} else {
+						$(node).removeClass("active");
+					}
+				});
+
+				selectNumber(iscroll.currPageX, false);
+				clickHandler = true;
+			},
+			onScrollMove: function(e) {
+				clickHandler = false;
+			},
+			onTouchStart: function(e) {
+				clickHandler = true;
+				$("#carouselWrapper").mousemove(function() {
+					clickHandler = false;
+				});
+			},
+			onTouchEnd: function(e) {
+				if (clickHandler == true && (e.type == "mouseup" || e.type == "touchend")) {
+					linkToEvent();
+				}
+				$("#carouselWrapper").mousemove(null);
+			}
+		});
+
+		function linkToEvent() {
+			var TimeMillisecondsClick = new Date();
+			if (TimeMillisecondsClick.getTime() > TimeMilliseconds.getTime() + 500 ) {
+				TimeMilliseconds = new Date();
+
+				if (eventLinkArray[currentEvent] != "") {
+					location.href=eventLinkArray[currentEvent];
+				}
+			}
+		} 
+
+		$(".eventScrollButton").click(function() {
+			iscroll.scrollToPage(this.id);
+		});
+
+		iscroll.scrollToPage(0);
+	}
+
+	$("#scroller, .eventScrollButton").mouseover(function() {
+		clearInterval(autoScrollIntervalId);
+		autoScrollIntervalId = null;
+	});
+
+	$("#scroller, .eventScrollButton").mouseout(function() {
+		if (autoScrollIntervalId == null) {
+			autoScrollIntervalId = setInterval(autoScroll, autoScrollInterval);
+		}
+	});
+
+	function autoScroll() {
+		if (currentEvent == totalCarousel-1) {
+			if ((navigator.appName).indexOf("Microsoft")!=-1) {
+				selectNumber(0, true);
+			} else {
+				iscroll.scrollToPage(0);
+			}
+		} else {
+			if ((navigator.appName).indexOf("Microsoft")!=-1) {
+				selectNumber(currentEvent+1, true);
+			} else {
+				iscroll.scrollToPage(currentEvent+1);
+			}
+		}
+	}
+
+	function selectNumber(newValue, motionFlag) {
+		if (currentEvent != newValue) {
+			currentEvent = Number(newValue);
+			var targetPosition = (currentEvent*-768);
+
+			$(".eventNavigation a").each(function(i, node) {
+				if (i == newValue) {
+					$("#"+i).css("color", "#000000");
+				} else {
+					$("#"+i).css("color", "#B4B4B4");
+				}
+			});
+
+			if (motionFlag == true) {
+				$("#scroller").animate( { left:targetPosition+"px" }, 500);
+			}
+		}
+	}
+
+	selectNumber(0, false);
+	var autoScrollIntervalId = setInterval(autoScroll, autoScrollInterval);
+
+	// SECTION LINK
+
+	$(".sectionLink").click(linkToMenuHandler);
+	$(".overlay").click(linkToMenuHandler);
+
+	function linkToMenuHandler() {
+		switch(this.id) {
+			case "vocalCoachTitle":
+			case "vocalCoachOverlay":
+				location.href="/Coach-IntroduceCoach";
+				break;
+			case "vocalCheckupTitle":
+			case "vocalCheckupOverlay":
+				location.href="/Vocalcheckup-Apply";
+				break;
+			case "starsTitle": 
+			case "starsOverlay":
+				location.href="/Stars-VocalCoachingPhoto";
+				break;
+			case "powerVocalTechniqueTitle":  
+			case "powerVocalTechniqueOverlay":
+				location.href="/PowerVocalTechnique-Introduce";
+				break;
+			case "concertTitle":
+			case "concertOverlay":
+				location.href="/Concert-OpenmicMovie";
+				break;
+			case "qnaTitle":
+				location.href="/QnA-HeadCoach";
+				break;
+		}
+	}
+
+	if (eventCount == 0) {
+		$("#eventDescription").css("display", "none");
+		$("#top").css("display", "none");
+		$("#top").css("height", "0px");
+	}
+
+	$("#moreMenuOpen").click(function() {
+		if ($("#moreMenu").height() != 142) {
+			$("#moreMenuButtons").css("display", "block");
+			$("#moreMenu").animate( { height:"142px" }, 500);
+		} else {
+			$("#moreMenuButtons").css("display", "none");
+			$("#moreMenu").animate( { height:"42px" }, 500);
+		}
+	});
+	
+});
+</script>
+
+<div id="top">
+
+		<div id="event" class="article">
+			<div id="eventDescription">
+				<div class="description" id="carouselWrapper">
+					<div id="scroller" style="3120">
+						<ul>
+							<li><div>
+								<img src='files/ex2.jpg' alt='못찾음' />
+							</div>
+							도봉산 <a href="second/third/mountain.jsp?code=482501001" target="_parent"> 더보기 </a>
+							</li>
+							<li><div>
+								<img src='files/ex3.jpg' alt='못찾음' />
+							</div>
+							지리산 <a href="second/third/mountain.jsp?code=482202301" target="_parent"> 더보기 </a>
+							</li>
+							<li><div>
+								<img src='files/ex1.jpg' alt='못찾음' />
+							</div>
+							북한산 <a href="second/third/mountain.jsp?code=114100801" target="_parent"> 더보기 </a>
+							</li>
+							<li><div>
+								<img src='files/ex4.jpg' alt='못찾음' />
+							</div>
+							설악산 <a href="second/third/mountain.jsp?code=428302602" target="_parent"> 더보기 </a>
+							</li>
+							<li><div>
+								<img src='files/ex5.jpg' alt='못찾음' />
+							</div>
+							왕방산 <a href="second/third/mountain.jsp?code=416502401" target="_parent"> 더보기 </a>
+							</li>
+							<li><div>
+								<img src='files/ex6.jpg' alt='못찾음' />
+							</div>
+							팔공산 <a href="second/third/mountain.jsp?code=457403001" target="_parent"> 더보기 </a>
+							</li>
+							
+						</ul>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</div>

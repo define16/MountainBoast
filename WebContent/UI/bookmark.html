@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>BookMark</title>
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+<script>
+function setIFrameHeight(obj){
+    if(obj.contentDocument){
+        obj.height = obj.contentDocument.body.offsetHeight + 40;
+    } else {
+        obj.height = obj.contentWindow.document.body.scrollHeight;
+    }
+}
+</script>
+</head>
+<body>
+<div data-role="header" data-position="fixed" data-id="headernav">
+		<!-- > <div data-role="fieldcontain"> <-->
+		<p>
+		<input type="search" name="search" id="search" value=""/>
+		</p>
+		<!-- ></div><-->
+		<div data-role="navbar">
+			<ul>
+				<li><a href="mountain.html"  >산</a></li>
+				<li><a href="emergency.html"   >응급상황</a></li>
+				<li><a href="information.html">생생정보</a></li>
+				<li><a href="bookmark.html" class="ui-btn-active ui-state-persist">즐겨찾기</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="content"><span>
+	 bookmark.html
+	     <iframe name="display_area"  src=""  seamless="true" width=100% height=100% frameborder=0 framespacing=0 marginheight=0 marginwidth=0 scrolling=no vspace=0>
+		 </iframe>
+		
+	 </span></div>
+	
+</body>
+</html>
